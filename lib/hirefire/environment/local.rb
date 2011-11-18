@@ -25,7 +25,7 @@ module HireFire
         # running on the local machine if amount is nil
         if amount.nil?
           return Rush::Box.new.processes.filter(
-            :cmdline => /rake jobs:work WORKER=HIREFIRE/
+            :cmdline => /bundle exec rake jobs:work WORKER=HIREFIRE/
           ).size
         end
 
@@ -42,7 +42,7 @@ module HireFire
           ##
           # Gather process ids from all HireFire workers
           pids = Rush::Box.new.processes.filter(
-            :cmdline => /rake jobs:work WORKER=HIREFIRE/
+            :cmdline => /bundle exec rake jobs:work WORKER=HIREFIRE/
           ).map(&:pid)
 
           ##
@@ -73,7 +73,7 @@ module HireFire
         if amount > workers_count
           (amount - workers_count).times do
             Rush::Box.new[Rails.root].bash(
-              'rake jobs:work WORKER=HIREFIRE', :background => true
+              'bundle exec rake jobs:work WORKER=HIREFIRE', :background => true
             )
           end
         end
